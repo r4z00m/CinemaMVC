@@ -26,16 +26,18 @@ public class AdminController {
     @GetMapping("/halls")
     public String getHalls() {
         System.out.println(hallService.findAll());
-        return "index";
+        return "hall";
     }
 
     @GetMapping("/films")
     public String getFilms() {
-        return "index";
+        System.out.println(filmService.findAll());
+        return "film";
     }
 
     @GetMapping("/sessions")
     public String getSessions() {
-        return "index";
+        System.out.println(filmService.findAll());
+        return "session";
     }
 }
