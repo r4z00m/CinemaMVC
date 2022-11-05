@@ -1,9 +1,9 @@
 package edu.school21.cinema.models;
 
-import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "session")
@@ -24,7 +24,7 @@ public class Session {
     @Temporal(value = TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
     @Column(name = "date_time")
-    private LocalDateTime dateTime;
+    private Date dateTime;
 
     @Column(name = "cost")
     private int cost;
@@ -53,11 +53,11 @@ public class Session {
         this.film = film;
     }
 
-    public LocalDateTime getDateTime() {
+    public Date getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
+    public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
 

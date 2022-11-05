@@ -1,7 +1,6 @@
 package edu.school21.cinema.models;
 
-import jakarta.persistence.*;
-
+import javax.persistence.*;
 import java.util.List;
 
 @Entity

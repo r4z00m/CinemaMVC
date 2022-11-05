@@ -21,7 +21,7 @@ import java.util.Properties;
 @Configuration
 @EnableWebMvc
 @ComponentScan("edu.school21.cinema")
-@PropertySource("classpath:../webapp/WEB-INF/hibernate.properties")
+@PropertySource("classpath:../application.properties")
 @EnableTransactionManagement
 public class SpringConfiguration {
 
