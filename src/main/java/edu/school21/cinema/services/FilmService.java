@@ -20,4 +20,8 @@ public class FilmService {
     public List<Film> findAll() {
         return filmRepository.findAll();
     }
+
+    public void save(Film film) {
+        filmRepository.save(film);
+    }
 }

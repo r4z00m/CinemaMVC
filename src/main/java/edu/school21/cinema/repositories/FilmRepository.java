@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface FilmRepository {
     List<Film> findAll();
+    void save(Film film);
 }

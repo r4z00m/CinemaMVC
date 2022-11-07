@@ -20,4 +20,8 @@ public class HallService {
     public List<Hall> findAll() {
         return hallRepository.findAll();
     }
+
+    public void save(Hall hall) {
+        hallRepository.save(hall);
+    }
 }

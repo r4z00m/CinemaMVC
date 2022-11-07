@@ -1,11 +1,15 @@
 package edu.school21.cinema.controllers;
 
+import edu.school21.cinema.models.Film;
+import edu.school21.cinema.models.Hall;
 import edu.school21.cinema.services.FilmService;
 import edu.school21.cinema.services.HallService;
 import edu.school21.cinema.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -24,20 +28,34 @@ public class AdminController {
     }
 
     @GetMapping("/halls")
-    public String getHalls() {
-        System.out.println(hallService.findAll());
+    public String getHalls(Model model) {
+        model.addAttribute("halls", hallService.findAll());
+        return "hall";
+    }
+
+    @PostMapping("/halls")
+    public String createHall(Model model, Hall hall) {
+        hallService.save(hall);
+        model.addAttribute("halls", hallService.findAll());
         return "hall";
     }
 
     @GetMapping("/films")
-    public String getFilms() {
-        System.out.println(filmService.findAll());
+    public String getFilms(Model model) {
+        model.addAttribute("films", filmService.findAll());
+        return "film";
+    }
+
+    @PostMapping("/films")
+    public String createFilm(Model model, Film film) {
+        filmService.save(film);
+        model.addAttribute("films", filmService.findAll());
         return "film";
     }
 
     @GetMapping("/sessions")
-    public String getSessions() {
-        System.out.println(filmService.findAll());
+    public String getSessions(Model model) {
+        model.addAttribute("sessions", sessionService.findAll());
         return "session";
     }
 }
