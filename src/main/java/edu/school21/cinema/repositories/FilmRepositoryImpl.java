@@ -25,4 +25,9 @@ public class FilmRepositoryImpl implements FilmRepository {
     public void save(Film film) {
         entityManager.persist(film);
     }
+
+    @Override
+    public Film findById(int filmId) {
+        return entityManager.find(Film.class, filmId);
+    }
 }

@@ -7,15 +7,12 @@
 <body>
 
 <#list films as film>
-    <h3>${film.getId()}</h3>
-    <h3>${film.getTitle()}</h3>
-    <h3>${film.getYearOfRelease()}</h3>
-    <h3>${film.getAgeRestriction()}</h3>
-    <h3>${film.getDescription()}</h3>
+    <img src="${springMacroRequestContext.contextPath}/images/${film.getPosterName()}" alt="img">
+    <h3>${film.getId()} ${film.getTitle()} ${film.getYearOfRelease()} ${film.getAgeRestriction()} ${film.getDescription()}</h3>
 </#list>
 
 <label for="form">Create a film:</label>
-<form method="post" action="/admin/panel/films" id="form">
+<form method="post" action="/Cinema/admin/panel/films" id="form" enctype="multipart/form-data">
     <label for="title">Enter the title:</label>
     <input type="text" name="title" id="title">
     <br/>
@@ -27,6 +24,9 @@
     <br/>
     <label for="description">Enter the description:</label>
     <input type="text" name="description" id="description">
+    <br/>
+    <label for="image">Choose a poster:</label>
+    <input type="file" accept="image/*" name="image" id="image">
     <br/>
     <input type="submit" value="Create">
 </form>

@@ -7,4 +7,5 @@ import java.util.List;
 public interface HallRepository {
     List<Hall> findAll();
     void save(Hall hall);
+    Hall findById(int hallId);
 }

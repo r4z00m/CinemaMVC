@@ -22,7 +22,7 @@ public class Session {
     private Film film;
 
     @Temporal(value = TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
+    @DateTimeFormat(pattern = "dd-MM-yyyy hh:mm")
     @Column(name = "date_time")
     private Date dateTime;
 

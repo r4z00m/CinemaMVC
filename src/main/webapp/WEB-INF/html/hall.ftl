@@ -12,7 +12,7 @@
 </#list>
 
 <label for="form">Create a hall: </label>
-<form method="post" action="/admin/panel/halls" id="form">
+<form method="post" action="/Cinema/admin/panel/halls" id="form">
     <label for="id">Enter a hall id:</label>
     <input type="number" name="id" id="id">
     <br/>

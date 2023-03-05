@@ -24,7 +24,7 @@ public class Film {
     private String description;
 
     @Column(name = "poster_name")
-    private String poster_name;
+    private String posterName;
 
     @OneToMany(mappedBy = "film")
     private List<Session> sessions;
@@ -69,11 +69,19 @@ public class Film {
         this.description = description;
     }
 
-    public String getPoster_name() {
-        return poster_name;
+    public String getPosterName() {
+        return posterName;
     }
 
-    public void setPoster_name(String poster_name) {
-        this.poster_name = poster_name;
+    public void setPosterName(String posterName) {
+        this.posterName = posterName;
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
     }
 }

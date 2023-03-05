@@ -25,4 +25,9 @@ public class HallRepositoryImpl implements HallRepository {
     public void save(Hall hall) {
         entityManager.persist(hall);
     }
+
+    @Override
+    public Hall findById(int hallId) {
+        return entityManager.find(Hall.class, hallId);
+    }
 }
