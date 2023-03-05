@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -15,7 +16,13 @@ public class SessionRepositoryImpl implements SessionRepository {
 
     @Override
     public List<Session> findAll() {
-        return entityManager.createQuery("SELECT session FROM Session session", Session.class)
+        return entityManager.createQuery("FROM Session", Session.class)
                 .getResultList();
+    }
+
+    @Override
+    @Transactional
+    public void save(Session session) {
+        entityManager.persist(session);
     }
 }

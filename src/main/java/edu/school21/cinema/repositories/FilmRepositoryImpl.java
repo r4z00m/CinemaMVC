@@ -16,7 +16,7 @@ public class FilmRepositoryImpl implements FilmRepository {
 
     @Override
     public List<Film> findAll() {
-        return entityManager.createQuery("SELECT film FROM Film film", Film.class)
+        return entityManager.createQuery("FROM Film", Film.class)
                 .getResultList();
     }
 

@@ -16,7 +16,7 @@ public class HallRepositoryImpl implements HallRepository {
 
     @Override
     public List<Hall> findAll() {
-        return entityManager.createQuery("SELECT hall FROM Hall hall", Hall.class)
+        return entityManager.createQuery("FROM Hall", Hall.class)
                 .getResultList();
     }
 

@@ -2,6 +2,7 @@ package edu.school21.cinema.controllers;
 
 import edu.school21.cinema.models.Film;
 import edu.school21.cinema.models.Hall;
+import edu.school21.cinema.models.Session;
 import edu.school21.cinema.services.FilmService;
 import edu.school21.cinema.services.HallService;
 import edu.school21.cinema.services.SessionService;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/admin/panel")
@@ -55,6 +57,23 @@ public class AdminController {
 
     @GetMapping("/sessions")
     public String getSessions(Model model) {
+        model.addAttribute("halls", hallService.findAll());
+        model.addAttribute("films", filmService.findAll());
+        model.addAttribute("sessions", sessionService.findAll());
+        return "session";
+    }
+
+    @PostMapping("/sessions")
+    public String createSession(Model model,
+                                @RequestParam int hall,
+                                @RequestParam int film,
+                                @RequestParam int cost) {
+        System.out.println(cost);
+        System.out.println(hall);
+        System.out.println(film);
+//        sessionService.save(session);
+        model.addAttribute("halls", hallService.findAll());
+        model.addAttribute("films", filmService.findAll());
         model.addAttribute("sessions", sessionService.findAll());
         return "session";
     }

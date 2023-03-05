@@ -20,4 +20,8 @@ public class SessionService {
     public List<Session> findAll() {
         return sessionRepository.findAll();
     }
+
+    public void save(Session session) {
+        sessionRepository.save(session);
+    }
 }

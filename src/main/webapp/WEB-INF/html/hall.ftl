@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<#list halls as item>
-    <h3>Hall id: ${item.getId()}</h3>
-    <h3>Number of seats: ${item.getNumberOfSeats()}</h3>
+<#list halls as hall>
+    <h3>Hall id: ${hall.getId()}</h3>
+    <h3>Number of seats: ${hall.getNumberOfSeats()}</h3>
 </#list>
 
 <label for="form">Create a hall: </label>
