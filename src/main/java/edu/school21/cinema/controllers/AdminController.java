@@ -40,7 +40,7 @@ public class AdminController {
     public String createHall(Model model, Hall hall) {
         hallService.save(hall);
         model.addAttribute("halls", hallService.findAll());
-        return "hall";
+        return "redirect:/admin/panel/halls";
     }
 
     @GetMapping("/films")
@@ -56,7 +56,7 @@ public class AdminController {
         film.setPosterName(image.getOriginalFilename());
         filmService.save(film);
         model.addAttribute("films", filmService.findAll());
-        return "film";
+        return "redirect:/admin/panel/films";
     }
 
     @GetMapping("/sessions")
@@ -78,6 +78,6 @@ public class AdminController {
         model.addAttribute("halls", hallService.findAll());
         model.addAttribute("films", filmService.findAll());
         model.addAttribute("sessions", sessionService.findAll());
-        return "session";
+        return "redirect:/admin/panel/sessions";
     }
 }

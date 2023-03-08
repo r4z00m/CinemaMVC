@@ -7,7 +7,7 @@
 <body>
 <#list sessions as session>
     <h3>${session.getCost()}</h3>
-    <h3>${session.getDateTime()}</h3>
+    <h3>${session.getDateTime().toLocaleString()}</h3>
 </#list>
 <label for="form">Create a session: </label>
 <form method="post" action="/Cinema/admin/panel/sessions" id="form">

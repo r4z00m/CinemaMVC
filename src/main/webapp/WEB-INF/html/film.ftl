@@ -7,8 +7,12 @@
 <body>
 
 <#list films as film>
-    <img src="${springMacroRequestContext.contextPath}/images/${film.getPosterName()}" alt="img">
-    <h3>${film.getId()} ${film.getTitle()} ${film.getYearOfRelease()} ${film.getAgeRestriction()} ${film.getDescription()}</h3>
+    <#if film.getPosterName()?has_content >
+        <img src="${springMacroRequestContext.contextPath}/images/${film.getPosterName()}" alt="${film.getPosterName()}">
+    <#else>
+        <img src="${springMacroRequestContext.contextPath}/images/default.jpeg" alt="default.jpeg">
+    </#if>
+    <h4>${film.getId()} ${film.getTitle()} ${film.getYearOfRelease()} ${film.getAgeRestriction()} ${film.getDescription()}</h4>
 </#list>
 
 <label for="form">Create a film:</label>
