@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -35,23 +37,16 @@ public class SessionService {
     public void save(int hallId, int filmId, String date, String time, int cost) {
         Hall hall = hallRepository.findById(hallId);
         Film film = filmRepository.findById(filmId);
-        Date dateObj = getDate(date, time);
         Session session = new Session();
         session.setHall(hall);
         session.setFilm(film);
-        session.setDateTime(dateObj);
+        session.setDateTime(getDate(date, time));
         session.setCost(cost);
         sessionRepository.save(session);
     }
 
-    private Date getDate(String date, String time) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-        Date result;
-        try {
-            result = dateFormat.parse(date + " " + time);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        return result;
+    private LocalDateTime getDate(String date, String time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return LocalDateTime.parse(date + " " + time, formatter);
     }
 }
