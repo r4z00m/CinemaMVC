@@ -49,4 +49,8 @@ public class SessionService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return LocalDateTime.parse(date + " " + time, formatter);
     }
+
+    public List<Session> search(String filmName) {
+        return sessionRepository.findByTitle(filmName);
+    }
 }

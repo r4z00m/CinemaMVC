@@ -2,13 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <title>Sessions</title>
 </head>
 <body>
+<script>$("search-input").click(function(text) { alert(text) });</script>
+<label for="search-input">Search the movie:</label>
+<input type="search" id="search-input" name="search">
+<button id="search">Search</button>
+<#--<script>$.ajax({-->
+<#--url: 'http://localhost:8080/Cinema/admin/panel/sessions/search',-->
+<#--method: 'get',-->
+<#--dataType: 'html',-->
+<#--data: {text: 'Текст'},-->
+<#--success: function(data){-->
+<#--alert(data);-->
+<#--}-->
+<#--});</script>-->
 <#list sessions as session>
     <h3>${session.getCost()}</h3>
     <h3>${session.getDateTime().toLocalDate()}</h3>
     <h3>${session.getDateTime().toLocalTime()}</h3>
+    <h3>${session.getFilm().getTitle()}</h3>
 </#list>
 <label for="form">Create a session: </label>
 <form method="post" action="/Cinema/admin/panel/sessions" id="form">
