@@ -2,13 +2,14 @@ package edu.school21.cinema.repositories;
 
 import edu.school21.cinema.models.Hall;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional(readOnly = true)
 public class HallRepositoryImpl implements HallRepository {
 
     @PersistenceContext

@@ -29,7 +29,7 @@ public class SessionRepositoryImpl implements SessionRepository {
 
     @Override
     public List<Session> findByTitle(String filmName) {
-        return entityManager.createQuery("FROM Session s WHERE s.film.title LIKE :title", Session.class)
+        return entityManager.createQuery("FROM Session s JOIN FETCH s.film f WHERE f.title LIKE :title", Session.class)
                 .setParameter("title", "%" + filmName + "%")
                 .getResultList();
     }

@@ -6,7 +6,7 @@
     <title>Sessions</title>
 </head>
 <body>
-<script>$("search-input").click(function(text) { alert(text) });</script>
+<#--<script>$("search-input").click(function(text) { alert(text) });</script>-->
 <label for="search-input">Search the movie:</label>
 <input type="search" id="search-input" name="search">
 <button id="search">Search</button>
@@ -21,8 +21,7 @@
 <#--});</script>-->
 <#list sessions as session>
     <h3>${session.getCost()}</h3>
-    <h3>${session.getDateTime().toLocalDate()}</h3>
-    <h3>${session.getDateTime().toLocalTime()}</h3>
+    <h3>${session.getDateTime()}</h3>
     <h3>${session.getFilm().getTitle()}</h3>
 </#list>
 <label for="form">Create a session: </label>

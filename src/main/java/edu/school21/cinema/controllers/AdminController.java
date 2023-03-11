@@ -90,7 +90,6 @@ public class AdminController {
     @ResponseBody
     @GetMapping(value = "/sessions/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Session>> searchResult(@RequestParam(value = "filmName") String filmName) {
-        System.out.println(sessionService.search(filmName));
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+        return new ResponseEntity<>(sessionService.search(filmName), HttpStatus.OK);
     }
 }
