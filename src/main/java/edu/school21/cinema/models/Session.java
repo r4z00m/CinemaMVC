@@ -1,13 +1,16 @@
 package edu.school21.cinema.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "session")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +18,6 @@ public class Session {
     private int id;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "hall_id", referencedColumnName = "id")
     private Hall hall;
 
@@ -25,7 +27,6 @@ public class Session {
 
     @Column(name = "date_time")
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date dateTime;
 
     @Column(name = "cost")

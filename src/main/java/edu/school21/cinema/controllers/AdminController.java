@@ -1,8 +1,8 @@
 package edu.school21.cinema.controllers;
 
+import edu.school21.cinema.dto.SessionResponseDTO;
 import edu.school21.cinema.models.Film;
 import edu.school21.cinema.models.Hall;
-import edu.school21.cinema.models.Session;
 import edu.school21.cinema.services.FilmService;
 import edu.school21.cinema.services.HallService;
 import edu.school21.cinema.services.ImageService;
@@ -15,8 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/admin/panel")
@@ -88,7 +86,7 @@ public class AdminController {
 
     @ResponseBody
     @GetMapping(value = "/sessions/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Session>> searchResult(@RequestParam(value = "filmName") String filmName) {
+    public ResponseEntity<SessionResponseDTO> searchResult(@RequestParam(value = "filmName") String filmName) {
         return new ResponseEntity<>(sessionService.search(filmName), HttpStatus.OK);
     }
 }

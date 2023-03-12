@@ -1,5 +1,7 @@
 package edu.school21.cinema.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,7 +15,8 @@ public class Hall {
     @Column(name = "number_of_seats")
     private int numberOfSeats;
 
-    @OneToMany(mappedBy = "hall")
+    @JsonIgnore
+    @OneToMany(mappedBy = "hall", fetch = FetchType.EAGER)
     private List<Session> sessions;
 
     public void setId(int id) {
