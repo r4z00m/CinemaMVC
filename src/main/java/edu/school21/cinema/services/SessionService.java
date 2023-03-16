@@ -76,4 +76,8 @@ public class SessionService {
         sessionResponseDTO.setSessions(sessionDTOS);
         return sessionResponseDTO;
     }
+
+    public Session findById(int id) {
+        return sessionRepository.findById(id);
+    }
 }

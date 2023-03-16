@@ -9,4 +9,5 @@ public interface SessionRepository {
     List<Session> findAll();
     void save(Session session);
     List<Session> findByTitle(String filmName);
+    Session findById(int id);
 }

@@ -36,7 +36,7 @@ public class AdminController {
     @GetMapping("/halls")
     public String getHalls(Model model) {
         model.addAttribute("halls", hallService.findAll());
-        return "hall";
+        return "halls";
     }
 
     @PostMapping("/halls")
@@ -49,7 +49,7 @@ public class AdminController {
     @GetMapping("/films")
     public String getFilms(Model model) {
         model.addAttribute("films", filmService.findAll());
-        return "film";
+        return "films";
     }
 
     @PostMapping(value = "/films", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -67,7 +67,7 @@ public class AdminController {
         model.addAttribute("halls", hallService.findAll());
         model.addAttribute("films", filmService.findAll());
         model.addAttribute("sessions", sessionService.findAll());
-        return "session";
+        return "sessions";
     }
 
     @PostMapping("/sessions")
@@ -87,6 +87,15 @@ public class AdminController {
     @ResponseBody
     @GetMapping(value = "/sessions/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SessionResponseDTO> searchResult(@RequestParam(value = "filmName") String filmName) {
+        if (filmName.isEmpty()) {
+            return new ResponseEntity<>(new SessionResponseDTO(), HttpStatus.OK);
+        }
         return new ResponseEntity<>(sessionService.search(filmName), HttpStatus.OK);
+    }
+
+    @GetMapping("/session/{id}")
+    public String session(Model model, @PathVariable String id) {
+        model.addAttribute("session", sessionService.findById(Integer.parseInt(id)));
+        return "session";
     }
 }

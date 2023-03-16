@@ -30,4 +30,9 @@ public class SessionRepositoryImpl implements SessionRepository {
                 .setParameter("title", "%" + filmName + "%")
                 .getResultList();
     }
+
+    @Override
+    public Session findById(int id) {
+        return entityManager.find(Session.class, id);
+    }
 }
