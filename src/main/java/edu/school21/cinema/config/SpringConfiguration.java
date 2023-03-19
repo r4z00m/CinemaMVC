@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -64,12 +67,17 @@ public class SpringConfiguration implements WebMvcConfigurer {
 
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//
+//        dataSource.setDriverClassName(env.getRequiredProperty("hibernate.driver_class"));
+//        dataSource.setUrl(env.getRequiredProperty("hibernate.connection.url"));
+//        dataSource.setUsername(env.getRequiredProperty("hibernate.connection.username"));
+//        dataSource.setPassword(env.getRequiredProperty("hibernate.connection.password"));
 
-        dataSource.setDriverClassName(env.getRequiredProperty("hibernate.driver_class"));
-        dataSource.setUrl(env.getRequiredProperty("hibernate.connection.url"));
-        dataSource.setUsername(env.getRequiredProperty("hibernate.connection.username"));
-        dataSource.setPassword(env.getRequiredProperty("hibernate.connection.password"));
+        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+        EmbeddedDatabase dataSource = builder.setType(EmbeddedDatabaseType.HSQL)
+                .addScript("classpath:sql/hsqlschema.sql")
+                .addScript("classpath:sql/data.sql").build();
 
         return dataSource;
     }
@@ -84,8 +92,8 @@ public class SpringConfiguration implements WebMvcConfigurer {
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect",
-                env.getRequiredProperty("hibernate.dialect"));
+//        properties.put("hibernate.dialect",
+//                env.getRequiredProperty("hibernate.dialect"));
         properties.put("hibernate.show_sql",
                 env.getRequiredProperty("hibernate.show_sql"));
         return properties;

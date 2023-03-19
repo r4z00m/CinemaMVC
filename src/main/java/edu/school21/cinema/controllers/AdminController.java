@@ -52,6 +52,12 @@ public class AdminController {
         return "films";
     }
 
+    @GetMapping("/films/{filmId}/chat")
+    public String getFilmChat(Model model, @PathVariable int filmId) {
+        model.addAttribute("filmId", filmId);
+        return "film";
+    }
+
     @PostMapping(value = "/films", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String createFilm(Model model, Film film,
                              @RequestPart MultipartFile image) {

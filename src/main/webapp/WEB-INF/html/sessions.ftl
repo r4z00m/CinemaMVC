@@ -46,7 +46,9 @@
         <h3>${session.getCost()}</h3>
         <h3>${session.getDateTime()}</h3>
         <h3>${session.getFilm().getTitle()}</h3>
+        <a href="films/${session.getFilm().getId()}/chat">Chat ${session.getFilm().getTitle()}</a>
     </#list>
+    <br/>
     <label for="form">Create a session: </label>
     <form method="post" action="/Cinema/admin/panel/sessions" id="form">
         <label for="hall">Select a hall:</label>
