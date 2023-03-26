@@ -1,5 +1,7 @@
 package edu.school21.cinema.controllers;
 
+import edu.school21.cinema.dto.Greeting;
+import edu.school21.cinema.dto.MessageDTO;
 import edu.school21.cinema.dto.SessionResponseDTO;
 import edu.school21.cinema.models.Film;
 import edu.school21.cinema.models.Hall;
@@ -8,13 +10,17 @@ import edu.school21.cinema.services.HallService;
 import edu.school21.cinema.services.ImageService;
 import edu.school21.cinema.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/admin/panel")
@@ -24,6 +30,9 @@ public class AdminController {
     private final FilmService filmService;
     private final SessionService sessionService;
     private final ImageService imageService;
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Autowired
     public AdminController(HallService hallService, FilmService filmService, SessionService sessionService, ImageService imageService) {
@@ -53,8 +62,18 @@ public class AdminController {
     }
 
     @GetMapping("/films/{filmId}/chat")
-    public String getFilmChat(Model model, @PathVariable int filmId) {
-        model.addAttribute("filmId", filmId);
+    public String getFilmChat(Model model,
+                              @PathVariable int filmId,
+                              @CookieValue(value = "user", defaultValue = "") String cookie,
+                              HttpServletResponse response) {
+        System.out.println(cookie);
+        if (cookie.isEmpty()) {
+            Cookie userCookie = new Cookie("user", "1");
+            userCookie.setPath("/");
+            userCookie.setMaxAge(120);
+            response.addCookie(userCookie);
+        }
+        model.addAttribute("film", filmService.findById(filmId));
         return "film";
     }
 
@@ -103,5 +122,19 @@ public class AdminController {
     public String session(Model model, @PathVariable String id) {
         model.addAttribute("session", sessionService.findById(Integer.parseInt(id)));
         return "session";
+    }
+
+    @MessageMapping("/hello")
+//    @SendTo("/film/chat/messages")
+    public Greeting greeting(MessageDTO messageDTO) throws Exception {
+        Thread.sleep(1000); // simulated delay
+        simpMessagingTemplate.convertAndSend("/film/" + messageDTO.getFilmId() + "/chat/messages", new Greeting("Hello, " + HtmlUtils.htmlEscape(messageDTO.getName()) + "!"));
+        return new Greeting("Hello, " + HtmlUtils.htmlEscape(messageDTO.getName()) + "!");
+    }
+
+    @GetMapping("/haha")
+    public String hello(Model model) {
+        model.addAttribute("film", filmService.findById(1));
+        return "index";
     }
 }

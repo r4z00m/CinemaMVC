@@ -28,7 +28,7 @@ public class FilmRepositoryImpl implements FilmRepository {
     }
 
     @Override
-    public Film findById(int filmId) {
-        return entityManager.find(Film.class, filmId);
+    public Film findById(int id) {
+        return entityManager.find(Film.class, id);
     }
 }

@@ -1,10 +1,7 @@
 package edu.school21.cinema.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
@@ -29,6 +26,7 @@ import java.util.Properties;
 @ComponentScan("edu.school21.cinema")
 @PropertySource("classpath:../application.properties")
 @EnableTransactionManagement
+@Import(WebSocketConfig.class)
 public class SpringConfiguration implements WebMvcConfigurer {
 
     private final Environment env;
@@ -108,8 +106,9 @@ public class SpringConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/images/**")
-                .addResourceLocations("/images/");
+        registry.addResourceHandler("/images/**", "/static/**")
+                .addResourceLocations("/images/")
+                .addResourceLocations("/static/");
     }
 }
 

@@ -7,5 +7,5 @@ import java.util.List;
 public interface FilmRepository {
     List<Film> findAll();
     void save(Film film);
-    Film findById(int filmId);
+    Film findById(int id);
 }
