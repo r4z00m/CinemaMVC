@@ -35,19 +35,21 @@ public class AdminController {
     private final SessionService sessionService;
     private final ImageService imageService;
     private final UserService userService;
-    private final UserInfoService userInfoService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
-
-    @Autowired
-    public AdminController(HallService hallService, FilmService filmService, SessionService sessionService, ImageService imageService, UserService userService, UserInfoService userInfoService) {
+    public AdminController(HallService hallService,
+                           FilmService filmService,
+                           SessionService sessionService,
+                           ImageService imageService,
+                           UserService userService,
+                           SimpMessagingTemplate simpMessagingTemplate) {
         this.hallService = hallService;
         this.filmService = filmService;
         this.sessionService = sessionService;
         this.imageService = imageService;
         this.userService = userService;
-        this.userInfoService = userInfoService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     @GetMapping("/halls")
@@ -91,14 +93,7 @@ public class AdminController {
             userCookie.setMaxAge(60 * 5);
             response.addCookie(userCookie);
         } else {
-            user = userService.findById(Integer.parseInt(cookie));
-            UserInfo userInfo = new UserInfo();
-            userInfo.setDateTime(new Date());
-            userInfo.setIp(IpGetter.getClientIpAddress(request));
-            List<UserInfo> list = user.getUserInfo();
-            list.add(userInfo);
-            userInfo.setUser(user);
-            user.setUserInfo(list);
+            user = userService.saveNewUserInfo(Integer.parseInt(cookie), request);
         }
         model.addAttribute("film", filmService.findById(filmId));
         model.addAttribute("user", user);
@@ -158,11 +153,5 @@ public class AdminController {
         Thread.sleep(1000); // simulated delay
         simpMessagingTemplate.convertAndSend("/film/" + messageDTO.getFilmId() + "/chat/messages", new Response("Hello, " + HtmlUtils.htmlEscape(messageDTO.getName()) + "!"));
         return new Response("Hello, " + HtmlUtils.htmlEscape(messageDTO.getName()) + "!");
-    }
-
-    @GetMapping("/haha")
-    public String hello(Model model) {
-        model.addAttribute("film", filmService.findById(1));
-        return "index";
     }
 }
