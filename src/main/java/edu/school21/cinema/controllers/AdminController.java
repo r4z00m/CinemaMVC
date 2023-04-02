@@ -1,14 +1,14 @@
 package edu.school21.cinema.controllers;
 
-import edu.school21.cinema.dto.Greeting;
+import edu.school21.cinema.dto.Response;
 import edu.school21.cinema.dto.MessageDTO;
 import edu.school21.cinema.dto.SessionResponseDTO;
 import edu.school21.cinema.models.Film;
 import edu.school21.cinema.models.Hall;
-import edu.school21.cinema.services.FilmService;
-import edu.school21.cinema.services.HallService;
-import edu.school21.cinema.services.ImageService;
-import edu.school21.cinema.services.SessionService;
+import edu.school21.cinema.models.User;
+import edu.school21.cinema.models.UserInfo;
+import edu.school21.cinema.services.*;
+import edu.school21.cinema.utils.IpGetter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -20,7 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin/panel")
@@ -30,16 +34,20 @@ public class AdminController {
     private final FilmService filmService;
     private final SessionService sessionService;
     private final ImageService imageService;
+    private final UserService userService;
+    private final UserInfoService userInfoService;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
     @Autowired
-    public AdminController(HallService hallService, FilmService filmService, SessionService sessionService, ImageService imageService) {
+    public AdminController(HallService hallService, FilmService filmService, SessionService sessionService, ImageService imageService, UserService userService, UserInfoService userInfoService) {
         this.hallService = hallService;
         this.filmService = filmService;
         this.sessionService = sessionService;
         this.imageService = imageService;
+        this.userService = userService;
+        this.userInfoService = userInfoService;
     }
 
     @GetMapping("/halls")
@@ -65,15 +73,35 @@ public class AdminController {
     public String getFilmChat(Model model,
                               @PathVariable int filmId,
                               @CookieValue(value = "user", defaultValue = "") String cookie,
-                              HttpServletResponse response) {
-        System.out.println(cookie);
+                              HttpServletResponse response,
+                              HttpServletRequest request) {
+        User user;
         if (cookie.isEmpty()) {
-            Cookie userCookie = new Cookie("user", "1");
+            user = new User();
+            UserInfo userInfo = new UserInfo();
+            userInfo.setDateTime(new Date());
+            userInfo.setIp(IpGetter.getClientIpAddress(request));
+            userInfo.setUser(user);
+            List<UserInfo> list = new ArrayList<>();
+            list.add(userInfo);
+            user.setUserInfo(list);
+            int id = userService.save(user);
+            Cookie userCookie = new Cookie("user", String.valueOf(id));
             userCookie.setPath("/");
-            userCookie.setMaxAge(120);
+            userCookie.setMaxAge(60 * 5);
             response.addCookie(userCookie);
+        } else {
+            user = userService.findById(Integer.parseInt(cookie));
+            UserInfo userInfo = new UserInfo();
+            userInfo.setDateTime(new Date());
+            userInfo.setIp(IpGetter.getClientIpAddress(request));
+            List<UserInfo> list = user.getUserInfo();
+            list.add(userInfo);
+            userInfo.setUser(user);
+            user.setUserInfo(list);
         }
         model.addAttribute("film", filmService.findById(filmId));
+        model.addAttribute("user", user);
         return "film";
     }
 
@@ -126,10 +154,10 @@ public class AdminController {
 
     @MessageMapping("/hello")
 //    @SendTo("/film/chat/messages")
-    public Greeting greeting(MessageDTO messageDTO) throws Exception {
+    public Response greeting(MessageDTO messageDTO) throws Exception {
         Thread.sleep(1000); // simulated delay
-        simpMessagingTemplate.convertAndSend("/film/" + messageDTO.getFilmId() + "/chat/messages", new Greeting("Hello, " + HtmlUtils.htmlEscape(messageDTO.getName()) + "!"));
-        return new Greeting("Hello, " + HtmlUtils.htmlEscape(messageDTO.getName()) + "!");
+        simpMessagingTemplate.convertAndSend("/film/" + messageDTO.getFilmId() + "/chat/messages", new Response("Hello, " + HtmlUtils.htmlEscape(messageDTO.getName()) + "!"));
+        return new Response("Hello, " + HtmlUtils.htmlEscape(messageDTO.getName()) + "!");
     }
 
     @GetMapping("/haha")
