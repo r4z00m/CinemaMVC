@@ -1,5 +1,11 @@
 let stompClient = null;
 
+function loadMessages() {
+    messages.map(m => console.log(m));
+}
+
+loadMessages();
+
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
     $("#disconnect").prop("disabled", !connected);
@@ -33,7 +39,8 @@ function disconnect() {
 }
 
 function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val(), 'filmId': filmId}));
+    stompClient.send("/app/hello", {}, JSON.stringify({'message': $("#name").val(),
+        'filmId': filmId, 'userId': userId}));
 }
 
 function showGreeting(message) {

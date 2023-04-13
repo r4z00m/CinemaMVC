@@ -35,6 +35,7 @@ public class AdminController {
     private final SessionService sessionService;
     private final ImageService imageService;
     private final UserService userService;
+    private final MessageService messageService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     @Autowired
@@ -43,12 +44,13 @@ public class AdminController {
                            SessionService sessionService,
                            ImageService imageService,
                            UserService userService,
-                           SimpMessagingTemplate simpMessagingTemplate) {
+                           MessageService messageService, SimpMessagingTemplate simpMessagingTemplate) {
         this.hallService = hallService;
         this.filmService = filmService;
         this.sessionService = sessionService;
         this.imageService = imageService;
         this.userService = userService;
+        this.messageService = messageService;
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
@@ -97,6 +99,7 @@ public class AdminController {
         }
         model.addAttribute("film", filmService.findById(filmId));
         model.addAttribute("user", user);
+        model.addAttribute("messages", messageService.getAllMessagesByFilmId(filmId));
         return "film";
     }
 
@@ -151,7 +154,8 @@ public class AdminController {
 //    @SendTo("/film/chat/messages")
     public Response greeting(MessageDTO messageDTO) throws Exception {
         Thread.sleep(1000); // simulated delay
-        simpMessagingTemplate.convertAndSend("/film/" + messageDTO.getFilmId() + "/chat/messages", new Response("Hello, " + HtmlUtils.htmlEscape(messageDTO.getName()) + "!"));
-        return new Response("Hello, " + HtmlUtils.htmlEscape(messageDTO.getName()) + "!");
+        messageService.save(messageDTO);
+        simpMessagingTemplate.convertAndSend("/film/" + messageDTO.getFilmId() + "/chat/messages", new Response("Hello, " + HtmlUtils.htmlEscape(messageDTO.getMessage()) + " ! " + messageDTO.getFilmId() + " " + messageDTO.getUserId()));
+        return new Response("Hello, " + HtmlUtils.htmlEscape(messageDTO.getMessage()) + "!");
     }
 }

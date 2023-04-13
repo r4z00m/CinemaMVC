@@ -1,29 +1,50 @@
 package edu.school21.cinema.dto;
 
 public class MessageDTO {
-    private String name;
-    private String filmId;
+    private int id;
+    private String message;
+    private int filmId;
+    private int userId;
 
     public MessageDTO() {
     }
 
-    public MessageDTO(String name) {
-        this.name = name;
+    public MessageDTO(int id, String message, int filmId, int userId) {
+        this.id = id;
+        this.message = message;
+        this.filmId = filmId;
+        this.userId = userId;
     }
 
-    public String getName() {
-        return name;
+    public int getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getFilmId() {
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getFilmId() {
         return filmId;
     }
 
-    public void setFilmId(String filmId) {
+    public void setFilmId(int filmId) {
         this.filmId = filmId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

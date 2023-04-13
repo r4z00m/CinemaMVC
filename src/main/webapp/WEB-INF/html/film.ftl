@@ -5,6 +5,8 @@
     <title>Film</title>
     <script>
         let filmId = ${film.getId()}
+        let userId = ${user.getId()}
+        let messages = [<#list messages as message>${message},</#list>];
     </script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
